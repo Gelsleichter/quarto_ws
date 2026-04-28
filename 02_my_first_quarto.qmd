@@ -2,11 +2,19 @@
 title: "KKP - KKCS"
 author: "Workshop"
 format: html
+
 editor: visual
 embed-resources: true  # bundle everything into one HTML file
 
 # ──────────────────────────────────────────────────────────────
 # Optional settings — uncomment to try:
+
+# format:
+#   html:
+#     theme:
+#       dark: darkly
+#       light: cosmo # dark and ligth mode
+
 #
 # format:
 #   html:
@@ -42,17 +50,6 @@ head(Oats)
 
 This dataset comes from a split-plot experiment on oat yield (Yates, 1935). It contains **3 varieties** (Golden Rain, Marvellous, Victory), **4 nitrogen levels** (0, 0.2, 0.4, 0.6 cwt/acre), and **6 blocks** — 72 observations in total.
 
-## Summary Table
-
-```{r}
-#| label: tbl-summary
-#| tbl-cap: "Mean oat yield by variety"
-
-aggregate(yield ~ Variety, data = Oats, FUN = mean) |>
-  knitr::kable(digits = 1, col.names = c("Variety", "Mean Yield (bu/acre)"))
-```
-
-As shown in @tbl-summary, Marvellous shows the highest average yield among the three varieties.
 
 ## Inline Code
 
@@ -125,7 +122,7 @@ summary(model)$coefficients |>
   knitr::kable(digits = 3)
 ```
 
-The model suggests that each additional unit of nitrogen increases yield by approximately **`r round(coef(model)[2], 1)`** bushels/acre.
+The model (@tbl-model) suggests that each additional unit of nitrogen increases yield by approximately **`r round(coef(model)[2], 1)`** bushels/acre.
 
 ## Try Other Formats!
 
