@@ -30,10 +30,10 @@ visualizations, and text — all in a single file.
 
 | File | Description |
 |------|-------------|
-| [`01_slides.qmd`](01_slides.qmd) | Presentation slides (revealjs) |
+| [`01_slides.qmd`](01_slides_quarto_ws.qmd) | Presentation slides (revealjs) |
 | [`02_my_first_quarto.qmd`](02_my_first_quarto.qmd) | Follow-along document for the hands-on session |
 | [`custom.scss`](custom.scss) | Slide theme |
-| 🌐 [**View slides online**](https://gelsleichter.github.io/quarto_ws/01_slides.html) | Rendered HTML (after publishing) |
+| 🌐 [**View slides online**](https://gelsleichter.github.io/quarto_ws/01_slides_quarto_ws.html) | Rendered HTML (after publishing) |
 | 🌐 [**View exercise online**](https://gelsleichter.github.io/quarto_ws/02_my_first_quarto.html) | Rendered HTML (after publishing) |
 
 ---
