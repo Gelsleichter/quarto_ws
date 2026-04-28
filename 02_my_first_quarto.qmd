@@ -1,0 +1,132 @@
+---
+title: "KKP - KKCS"
+author: "Workshop"
+format: html
+editor: visual
+embed-resources: true  # bundle everything into one HTML file
+
+# ──────────────────────────────────────────────────────────────
+# Optional settings — uncomment to try:
+#
+# format:
+#   html:
+#     toc: true              # add a table of contents
+#     number-sections: true  # number the headings
+#     code-fold: show        # make code blocks collapsible
+#   docx: default            # also produce a Word document
+#
+# execute:
+#   echo: true               # show code in the output (default)
+#   eval: true               # run the code (default)
+#   warning: false           # hide warning messages
+#   message: false           # hide package loading messages
+# ──────────────────────────────────────────────────────────────
+---
+
+## Introduction
+
+This document explores the **Oats** dataset — a classic agricultural experiment on oat yield. We will create tables, figures, and a simple model to demonstrate how *Quarto* integrates code, text, and output in a single file.
+
+For more examples of what Quarto can produce, visit the [Quarto Gallery](https://quarto.org/docs/gallery/).
+
+## Load Data
+
+```{r}
+#| label: load-data
+
+data("Oats", package = "nlme")
+Oats <- as.data.frame(Oats)
+str(Oats)
+head(Oats)
+```
+
+This dataset comes from a split-plot experiment on oat yield (Yates, 1935). It contains **3 varieties** (Golden Rain, Marvellous, Victory), **4 nitrogen levels** (0, 0.2, 0.4, 0.6 cwt/acre), and **6 blocks** — 72 observations in total.
+
+## Summary Table
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Mean oat yield by variety"
+
+aggregate(yield ~ Variety, data = Oats, FUN = mean) |>
+  knitr::kable(digits = 1, col.names = c("Variety", "Mean Yield (bu/acre)"))
+```
+
+As shown in @tbl-summary, Marvellous shows the highest average yield among the three varieties.
+
+## Inline Code
+
+The dataset contains **`r nrow(Oats)`** observations. The overall mean yield was **`r round(mean(Oats$yield), 1)`** bushels/acre, ranging from `r min(Oats$yield)` to `r max(Oats$yield)`.
+
+## Visualization
+
+### Base R
+
+```{r}
+#| label: fig-yield-base
+#| fig-cap: "Oat yield by nitrogen application rate (base R)"
+#| fig-width: 8
+#| fig-height: 5
+#| eval: true
+
+boxplot(yield ~ nitro, data = Oats,
+        xlab = "Nitrogen (cwt/acre)", ylab = "Yield (bu/acre)",
+        main = "Oat Yield by Nitrogen Level",
+        col = c("#E8B4B8", "#B8D4E3", "#93C5B8", "#F5D6A8"))
+```
+
+### ggplot2
+
+```{r}
+#| label: fig-yield
+#| fig-cap: "Oat yield by nitrogen application rate"
+#| fig-width: 8
+#| fig-height: 5
+
+ggplot2::ggplot(Oats, ggplot2::aes(x = factor(nitro), y = yield,
+                                    fill = factor(nitro))) +
+  ggplot2::geom_boxplot(alpha = 0.7, show.legend = FALSE) +
+  ggplot2::geom_jitter(width = 0.1, alpha = 0.3) +
+  ggplot2::labs(x = "Nitrogen (cwt/acre)", y = "Yield (bu/acre)") +
+  ggplot2::theme_minimal(base_size = 14)
+```
+
+As shown in @fig-yield, yield increases with nitrogen application.
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: "Nitrogen response by oat variety"
+#| fig-width: 9
+#| fig-height: 5
+
+ggplot2::ggplot(Oats, ggplot2::aes(x = nitro, y = yield, color = Variety)) +
+  ggplot2::geom_point(size = 2, alpha = 0.6) +
+  ggplot2::geom_smooth(method = "lm", se = F) +
+  ggplot2::labs(x = "Nitrogen (cwt/acre)", y = "Yield (bu/acre)") +
+  ggplot2::theme_minimal(base_size = 14)
+```
+
+@fig-scatter shows that all three varieties respond positively to nitrogen, with similar slopes.
+
+## Simple Model
+
+```{r}
+#| label: fit-model
+
+model <- lm(yield ~ nitro + Variety, data = Oats)
+summary(model)
+```
+
+```{r}
+#| label: tbl-model
+#| tbl-cap: "Linear model coefficients"
+
+summary(model)$coefficients |>
+  knitr::kable(digits = 3)
+```
+
+The model suggests that each additional unit of nitrogen increases yield by approximately **`r round(coef(model)[2], 1)`** bushels/acre.
+
+## Try Other Formats!
+
+Try changing `format: html` to `format: docx` in the YAML header and render again. Same content, different output!
