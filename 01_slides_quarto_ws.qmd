@@ -1030,7 +1030,7 @@ Automatic, clickable navigation.
 :::
 :::::
 
-## Facts to sonsider before use Quarto
+## Facts to consider before use Quarto
 
 
 - **Heavy pipelines** → separate computation (`.R`) from reporting
@@ -1069,7 +1069,7 @@ Open RStudio → File → New File → Quarto Document
 
 <br>
 
-**If you have RStudio and Quarto** — follow along!
+**If you have RStudio (Quarto is built in)** — follow along!
 
 **If not** — All materials in the `link/QR code`.
 
